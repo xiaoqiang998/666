@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../../JQuery/jquery-3.2.1.js"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			header,footer{
+				width: 1000px;
+				height: 1500px;
+				background: lightblue;
+				margin: 0 auto;
+			}
+			.floor{
+				width: 1000px;
+				height: 900px;
+				background: lightcoral;
+				text-align: center;
+				margin: 10px auto;
+			}
+			ul{
+				position: fixed;
+				left: 80px;
+				top:50%;
+				margin-top: -150px;
+				width: 50px;
+				height: 300px;
+				background: lightgray;
+				display: none;
+			}
+			ul li{
+				width: 100%;
+				height: 49px;
+				border-bottom: 1px solid white;
+				position: relative;
+				line-height: 49px;
+				text-align: center;
+				cursor: pointer;
+			}
+			ul li:hover span{
+				display: block;
+				animation: move .6s forwards;
+			}
+			ul li span{
+				position: absolute;
+				left: 200px;
+				top: 0;
+				width: 100px;
+				background: lightcyan;
+				opacity: 0;
+				display: none;
+			}
+			.hot{
+				background: red;
+			}
+			@keyframes move{
+				from{
+					transform: translateX(0);
+					opacity: 0;
+				}
+				to{
+					transform: translateX(-100px);
+					opacity: 1;
+				}
+			}
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				
+				//可视窗口的高度
+				var $ch=$(window).height();
+				
+				
+				//每个楼层到顶端的值
+				var floorArr=[]
+				
+				$(".floor").each(function(){
+					floorArr.push($(this).offset().top)
+				})
+				
+				//滚动事件
+				$(window).scroll(function(){
+					var $scrollTop=$("body,html").scrollTop();
+					
+					
+					//显示隐藏
+					if($ch+$scrollTop>floorArr[0]){
+						$("ul").show(1000);
+					}else{
+						$("ul").hide(1000)
+					}
+					
+					//颜色
+					
+					for(var i=0;i<floorArr.length;i++){
+						if($ch+$scrollTop>floorArr[i]){
+							$(".jump").eq(i).addClass("hot").siblings().removeClass("hot");
+						}
+						if($ch+$scrollTop>floorArr[4]+900){
+							$(".jump").eq(i).removeClass("hot")
+						}
+						
+					}
+				})
+				
+				//楼层跳转
+				$(".jump").click(function(){
+					var index=$(this).index();
+					
+					$("body,html").animate({scrollTop:floorArr[index]})
+					
+				})
+				
+				
+				$(".back").click(function(){
+					$("body,html").animate({scrollTop:0})
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<header></header>
+		<srction>
+			<div class="floor">
+				<img src="img/1.jpg"/>
+			</div>
+			<div class="floor">
+				<img src="img/2.jpg"/>
+			</div>
+			<div class="floor">
+				<img src="img/3.jpg"/>
+			</div>
+			<div class="floor">
+				<img src="img/4.jpg"/>
+			</div>
+			<div class="floor">
+				<img src="img/5.jpg"/>
+			</div>
+			<ul>
+				<li class="jump">1<span>第一层</span></li>
+				<li class="jump">2<span>第二层</span></li>
+				<li class="jump">3<span>第三层</span></li>
+				<li class="jump">4<span>第四层</span></li>
+				<li class="jump">5<span>第五层</span></li>
+				<li class="back">返回<span>返回</span></li>
+			</ul>
+		</srction>
+		<footer></footer>
+	</body>
+</html>
